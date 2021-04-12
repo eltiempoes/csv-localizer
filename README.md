@@ -18,7 +18,7 @@ Sample CSV
 ## Installation
 csv-localizer can be installed from homebrew via 
 ```bash
-$ brew tap rogermolas/csv-localizer
+$ brew tap eltiempoes/csv-localizer
 $ brew install csv-localizer
 ```
 
