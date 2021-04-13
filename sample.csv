@@ -4,3 +4,4 @@ start_messge,Start running,开始跑步,実行を開始する
 stop_messge,Stop running,停止跑步,走りを止める
 ,,,
 stop_messge2,Stop running,停止跑步,走りを止める
+message_with_params,This is %1$s test %2$d,%2$d停%1$s止跑步,走りを止め%1$sる%2$d
