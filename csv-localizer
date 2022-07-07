@@ -181,7 +181,7 @@ def start_localize_android(source_path, all_writes, lang_keys, delimiter):
       fullpath = os.path.join(dirname, f)
       logging.info("Localizing: %s to Android", filename)
 
-      with open(fullpath, 'rb') as csvfile:
+      with open(fullpath, 'r') as csvfile:
         [fwrite.write('\n<!-- {0} -->\n'.format(filename)) for fwrite in allwrites]
 
         reader = csv.reader(csvfile, delimiter=delimiter)
@@ -189,18 +189,24 @@ def start_localize_android(source_path, all_writes, lang_keys, delimiter):
         next(iterrows) # skip first line (it is header).
 
         for row in iterrows:
+          if len(row) == 0:
+            continue
+            
           row_key = row[0].replace(" ", "")
           # comment
           if row_key[:2] == '//':
             continue
 
           row_values = [row[i+1] for i in range(len(lang_keys))]
+          
           # if any row is empty, skip it!
           if any([value == "" for value in row_values]):
             [fwrite.write('\n') for idx, fwrite in enumerate(allwrites)]
           else:
-            [fwrite.write('\t<string name="{key}">{lang}</string>\n'.format(key=row_key, lang=row_values[idx]))
-             for idx, fwrite in enumerate(allwrites)]
+            for idx, fwrite in enumerate(allwrites):
+              lang = row_values[idx].replace("\'", "\\'").replace("&", "&amp;")
+              fwrite.write('\t<string name="{key}">{lang}</string>\n'.format(key=row_key, lang=lang))
+             
         [fwrite.write('</resources>') for fwrite in allwrites]
   [fwrite.close() for fwrite in allwrites]
 
